@@ -20,8 +20,8 @@ import (
 const UserCollection = "users"
 
 var (
-	UserNotFoundByIdError    = errtype.NewEntityNotFoundError("user", "id")
-	UserNotFoundByEmailError = errtype.NewEntityNotFoundError("user", "email")
+	UserNotFoundByIdError    = errtype.NewEntityNotFoundError("mongo", "user", "id")
+	UserNotFoundByEmailError = errtype.NewEntityNotFoundError("mongo", "user", "email")
 	UserInsertingFailedError = errtype.NewInternalValidationError("unable to store 'user' or get inserted 'id'")
 	UserWasNotDeletedError   = errtype.NewInternalValidationError("user was not deleted")
 )
