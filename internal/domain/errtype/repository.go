@@ -18,11 +18,11 @@ const (
 
 type EntityNotFoundError struct{ publicError }
 
-func NewEntityNotFoundError(entity string, by string) *EntityNotFoundError {
+func NewEntityNotFoundError(where, entity string, by string) *EntityNotFoundError {
 	return &EntityNotFoundError{
 		publicError{
 			errored{
-				ErrorMessage: fmt.Sprintf("'%v' not found by given '%s'", entity, by),
+				ErrorMessage: fmt.Sprintf("%v: '%v' not found by given '%s'", where, entity, by),
 				ErrorType:    repositoryType,
 				errorLevel:   publicRepositoryLevel,
 				errorStatus:  publicRepositoryStatus,
