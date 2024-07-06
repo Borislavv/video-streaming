@@ -190,6 +190,7 @@ document.getElementById('video-upload-form').addEventListener('submit', function
                 if (ixhr.status === 200 || ixhr.status === 201) {
                     console.log('Video successfully created.');
                     console.log('Response from the server:', JSON.parse(ixhr.responseText));
+                    window.location.replace("/");
                 } else {
                     console.error('An error occurred during the video creation.');
                 }
@@ -205,8 +206,6 @@ document.getElementById('video-upload-form').addEventListener('submit', function
         }
     };
     xhr.send(formData);
-
-
 });
 
 // init. default data
