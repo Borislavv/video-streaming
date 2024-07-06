@@ -75,15 +75,6 @@ func (s *JwtService) New(user *agg.User) (token string, err error) {
 
 // Verify will decode the token and return a user ID or error, if it was occurred.
 func (s *JwtService) Verify(token string) (userID vo.ID, err error) {
-	// checking that token is not blocked
-	found, err := s.blockedTokenRepository.Has(s.ctx, token)
-	if err != nil {
-		return vo.ID{}, s.logger.LogPropagate(err)
-	}
-	if found {
-		return vo.ID{}, s.logger.LogPropagate(errtype.NewAccessTokenWasBlockedError())
-	}
-
 	parsedToken, err := jwt.Parse(token, func(decodedToken *jwt.Token) (interface{}, error) {
 		if decodedToken.Header["alg"] != s.jwtTokenEncryptAlgo {
 			// user must be banned here because the algo wasn't matched
@@ -101,6 +92,15 @@ func (s *JwtService) Verify(token string) (userID vo.ID, err error) {
 		s.logger.Log(err)
 		// return a token invalid error
 		return vo.ID{}, s.logger.LogPropagate(errtype.NewAccessTokenIsInvalidError())
+	}
+
+	// checking that token is not blocked
+	found, err := s.blockedTokenRepository.Has(s.ctx, parsedToken.Raw)
+	if err != nil {
+		return vo.ID{}, s.logger.LogPropagate(err)
+	}
+	if found {
+		return vo.ID{}, s.logger.LogPropagate(errtype.NewAccessTokenWasBlockedError())
 	}
 
 	// extracting claims of the givenToken payload
