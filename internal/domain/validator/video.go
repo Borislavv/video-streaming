@@ -142,10 +142,10 @@ func (v *VideoValidator) ValidateAggregate(agg *agg.Video) error {
 	} else {
 		if !agg.ID.Value.IsZero() {
 			if video.ID.Value != agg.ID.Value {
-				return errtype.NewUniquenessCheckFailedError(nameField)
+				return v.logger.LogPropagate(errtype.NewUniquenessCheckFailedError(nameField))
 			}
 		} else {
-			return errtype.NewUniquenessCheckFailedError(nameField)
+			return v.logger.LogPropagate(errtype.NewUniquenessCheckFailedError(nameField))
 		}
 	}
 
@@ -159,10 +159,10 @@ func (v *VideoValidator) ValidateAggregate(agg *agg.Video) error {
 	} else {
 		if !agg.ID.Value.IsZero() {
 			if video.ID.Value != agg.ID.Value {
-				return errtype.NewUniquenessCheckFailedError(resourceIDField)
+				return v.logger.LogPropagate(errtype.NewUniquenessCheckFailedError(resourceIDField))
 			}
 		} else {
-			return errtype.NewUniquenessCheckFailedError(resourceIDField)
+			return v.logger.LogPropagate(errtype.NewUniquenessCheckFailedError(resourceIDField))
 		}
 	}
 
