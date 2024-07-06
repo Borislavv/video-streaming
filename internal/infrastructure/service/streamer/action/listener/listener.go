@@ -60,9 +60,9 @@ func (l *WebSocketActionsListener) Listen(wg *sync.WaitGroup, conn *websocket.Co
 				return
 			}
 			if t == websocket.TextMessage {
-				do, data, perr := l.communicator.Parse(b)
-				if perr != nil {
-					l.logger.Error(fmt.Sprintf("[%v]: %v", conn.RemoteAddr(), perr.Error()))
+				do, data, err := l.communicator.Parse(b)
+				if err != nil {
+					l.logger.Error(fmt.Sprintf("[%v]: %v", conn.RemoteAddr(), err.Error()))
 					return
 				}
 				if _, isSupported := supportedActionsMap[do]; isSupported {
