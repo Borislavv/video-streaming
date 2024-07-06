@@ -25,6 +25,7 @@ document.getElementById('main-form').addEventListener('submit', function (event)
         .then(response => response.json())
         .then(handleResponse)
         .catch(error => {
+            console.error('Error occurred while loading a video list:', error);
             showErrorMessage('Error: ' + error.message);
             setTimeout(clearErrorMessage, 5000);
         });
@@ -70,7 +71,7 @@ function handleResponse(data) {
         showErrorMessage(data.error.message || "A server error occurred");
         setTimeout(clearErrorMessage, 5000); // Автоматическое скрытие сообщения об ошибке через 5 секунд
     } else {
-        document.cookie = `x-access-token=${data.token}`;
+        document.cookie = `x-access-token=`+data.data;
         window.location.replace("/");
     }
 }
