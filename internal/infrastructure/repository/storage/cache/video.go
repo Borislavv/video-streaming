@@ -3,6 +3,7 @@ package cache
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"github.com/Borislavv/video-streaming/internal/domain/agg"
 	"github.com/Borislavv/video-streaming/internal/domain/errtype"
 	"github.com/Borislavv/video-streaming/internal/domain/logger/interface"
@@ -10,9 +11,16 @@ import (
 	diinterface "github.com/Borislavv/video-streaming/internal/domain/service/di/interface"
 	"github.com/Borislavv/video-streaming/internal/infrastructure/helper"
 	queryinterface "github.com/Borislavv/video-streaming/internal/infrastructure/repository/query/interface"
+	"github.com/Borislavv/video-streaming/internal/infrastructure/repository/storage/mongodb"
 	mongodbinterface "github.com/Borislavv/video-streaming/internal/infrastructure/repository/storage/mongodb/interface"
 	"reflect"
 	"time"
+)
+
+var (
+	VideoNotFoundByIdError         = errtype.NewEntityNotFoundError("cache", "video", "id")
+	VideoNotFoundByNameError       = errtype.NewEntityNotFoundError("cache", "video", "name")
+	VideoNotFoundByResourceIdError = errtype.NewEntityNotFoundError("cache", "video", "resource.id")
 )
 
 type VideoRepository struct {
@@ -68,12 +76,19 @@ func (r *VideoRepository) findOneByID(ctx context.Context, q queryinterface.Find
 
 			videoAgg, err := r.Video.FindOneByID(ctx, q)
 			if err != nil {
+				if errors.Is(err, mongodb.VideoNotFoundByIdError) {
+					return nil, VideoNotFoundByIdError
+				}
 				return nil, r.logger.LogPropagate(err)
 			}
 			return videoAgg, nil
 		})
 	if err != nil {
-		return nil, r.logger.LogPropagate(err)
+		if errors.Is(err, mongodb.VideoNotFoundByIdError) {
+			return nil, VideoNotFoundByIdError
+		} else {
+			return nil, r.logger.LogPropagate(err)
+		}
 	}
 
 	// casting found data to struct
@@ -156,13 +171,20 @@ func (r *VideoRepository) findOneByName(ctx context.Context, q queryinterface.Fi
 
 		videoAgg, err := r.Video.FindOneByName(ctx, q)
 		if err != nil {
+			if errors.Is(err, mongodb.VideoNotFoundByNameError) {
+				return nil, VideoNotFoundByNameError
+			}
 			return nil, r.logger.LogPropagate(err)
 		}
 
 		return videoAgg, nil
 	})
 	if err != nil {
-		return nil, r.logger.LogPropagate(err)
+		if errors.Is(err, VideoNotFoundByNameError) {
+			return nil, VideoNotFoundByNameError
+		} else {
+			return nil, r.logger.LogPropagate(err)
+		}
 	}
 
 	videoAgg, ok := videoInterface.(*agg.Video)
@@ -196,13 +218,20 @@ func (r *VideoRepository) findOneByResourceID(ctx context.Context, q queryinterf
 
 		videoAgg, err := r.Video.FindOneByResourceID(ctx, q)
 		if err != nil {
+			if errors.Is(err, mongodb.VideoNotFoundByResourceIdError) {
+				return nil, VideoNotFoundByResourceIdError
+			}
 			return nil, r.logger.LogPropagate(err)
 		}
 
 		return videoAgg, nil
 	})
 	if err != nil {
-		return nil, r.logger.LogPropagate(err)
+		if errors.Is(err, VideoNotFoundByResourceIdError) {
+			return nil, VideoNotFoundByResourceIdError
+		} else {
+			return nil, r.logger.LogPropagate(err)
+		}
 	}
 
 	videoAgg, ok := videoInterface.(*agg.Video)
