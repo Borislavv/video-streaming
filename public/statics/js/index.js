@@ -53,15 +53,15 @@ function loadVideoList() {
             'x-access-token': token,
         }
     })
-        .then(response => response.json())
-        .then(data => {
-            // render list of videos
-            renderList(data.data)
-        })
-        .catch(error => {
-            console.error('Error occurred while loading a video list:', error);
-            ul.textContent = 'Sorry, there is an error occurred while loading a video list';
-        });
+    .then(response => response.json())
+    .then(data => {
+        // render list of videos
+        renderList(data.data)
+    })
+    .catch(error => {
+        console.error('Error occurred while loading a video list:', error);
+        ul.textContent = 'Sorry, there is an error occurred while loading a video list';
+    });
 }
 
 function renderList(data) {
@@ -83,7 +83,7 @@ function renderList(data) {
             const listItem = document.createElement('li');
             listItem.className = 'list-item';
             listItem.textContent = video.name;
-            listItem.id = video.id
+            listItem.id = video.id.value
             videoList.appendChild(listItem);
         });
 
@@ -170,17 +170,43 @@ document.getElementById('video-upload-form').addEventListener('submit', function
     let formData = new FormData(this); // 'this' refers to the form
     let xhr = new XMLHttpRequest();
     xhr.open('POST', '/api/v1/resource', true);
-
-    xhr.onload = function () {
-        if (xhr.status === 200) {
-            console.log('Video uploaded successfully');
+    xhr.onload = function (data) {
+        if (xhr.status === 200 || xhr.status === 201) {
+            console.log('File successfully uploaded.');
             console.log('Response from the server:', JSON.parse(xhr.responseText));
+            let response = JSON.parse(xhr.responseText);
+
+            let iData = {
+                name: response.data.name,
+                resourceID: response.data.id,
+                description: "Awesome file :)"
+            };
+
+            let ixhr = new XMLHttpRequest();
+            ixhr.open('POST', '/api/v1/video', true);
+            ixhr.setRequestHeader('Content-Type', 'application/json'); // Установка заголовка для JSON
+
+            ixhr.onload = function () {
+                if (ixhr.status === 200 || ixhr.status === 201) {
+                    console.log('Video successfully created.');
+                    console.log('Response from the server:', JSON.parse(ixhr.responseText));
+                } else {
+                    console.error('An error occurred during the video creation.');
+                }
+            };
+
+            ixhr.onerror = function () {
+                console.error('An error occurred during the request.');
+            };
+
+            ixhr.send(JSON.stringify(iData)); // Отправка данных в формате JSON
         } else {
-            console.error('An error occurred during the upload');
+            console.error('An error occurred during the file uploading.');
         }
     };
-
     xhr.send(formData);
+
+
 });
 
 // init. default data
