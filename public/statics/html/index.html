@@ -1,84 +1,84 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="icon" type="image/x-icon" href="/static/img/favicon.ico">
-        <link rel="stylesheet" type="text/css" href="/static/css/styles.css">
-        <title>Streaming Video service</title>
-    </head>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="/static/img/favicon.ico">
+    <link rel="stylesheet" type="text/css" href="/static/css/styles.css">
+    <title>Streaming Video service</title>
+</head>
 
-    <body>
-        <div class="sidebar">
-            <ul class="menu">
-                <li id="video-control">Video</li>
-                <li>Audio</li>
-            </ul>
-        </div>
+<body>
+<div class="sidebar">
+    <ul class="menu">
+        <li id="video-control">Video</li>
+        <li>Audio</li>
+    </ul>
+</div>
 
-        <div id="video-upload-popup" class="modal">
-            <div class="modal-content">
-                <span class="close-button">&times;</span>
-                <form id="video-upload-form">
-                    <label for="video-file">Choose a video for uploading:</label>
-                    <input type="file" id="video-file" name="resource"><br><br>
-                    <input type="submit" value="Upload">
-                </form>
+<div id="video-upload-popup" class="modal">
+    <div class="modal-content">
+        <span class="close-button">&times;</span>
+        <form id="video-upload-form">
+            <label for="video-file">Choose a video for uploading:</label>
+            <input type="file" id="video-file" name="resource"><br><br>
+            <input type="submit" value="Upload" class="button">
+        </form>
+    </div>
+</div>
+
+<header>
+    <h1>Streaming video service</h1>
+</header>
+
+<div class="main-content">
+    <div class="container">
+        <div id="custom-alert" class="custom-alert">
+            <div class="alert-content">
+                <p id="alert-message"></p>
+                <button id="close-alert">Close</button>
             </div>
         </div>
 
-        <header>
-            <h1>Streaming video service</h1>
-        </header>
+        <div class="vide-container">
+            <video id="videoPlayer" controls></video>
 
-        <div class="main-content">
-            <div class="container">
-                <div id="custom-alert" class="custom-alert">
-                    <div class="alert-content">
-                        <p id="alert-message"></p>
-                        <button id="close-alert">Close</button>
-                    </div>
-                </div>
+            <div id="video-list" class="dropdown-content">
+                <ul></ul>
+                <div class="pagination-info"></div>
 
-                <div class="vide-container">
-                    <video id="videoPlayer" controls></video>
+                <div class="pagination-control">
+                    <select id="limit-select" class="button">
+                        <option value="10">10 per page</option>
+                        <option value="25">25 per page</option>
+                        <option value="50">50 per page</option>
+                        <option value="100">100 per page</option>
+                    </select>
 
-                    <div id="video-list" class="dropdown-content">
-                        <ul></ul>
-                        <div class="pagination-info"></div>
+                    <select id="page-select" class="button">
+                        <option value="1">Page 1</option>
+                    </select>
 
-                        <div class="pagination-control">
-                            <select id="limit-select" class="button">
-                                <option value="10">10 per page</option>
-                                <option value="25">25 per page</option>
-                                <option value="50">50 per page</option>
-                                <option value="100">100 per page</option>
-                            </select>
-
-                            <select id="page-select" class="button">
-                                <option value="1">Page 1</option>
-                            </select>
-
-                            <button style="margin-left: 88%; border: 1px black; padding-right: 20px;" id="request-btn" class="button">
-                                Get it
-                            </button>
-                        </div>
-                    </div>
-
-                    <div class="buttons">
-                        <button id="prev-btn" class="button">Previous</button>
-                        <button id="list-btn" class="button">List</button>
-                        <button id="next-btn" class="button">Next</button>
-                    </div>
+                    <button style="margin-left: 88%; border: 1px black; padding-right: 20px;" id="request-btn" class="button">
+                        Get it
+                    </button>
                 </div>
             </div>
+
+            <div class="buttons">
+                <button id="prev-btn" class="button">Previous</button>
+                <button id="list-btn" class="button">List</button>
+                <button id="next-btn" class="button">Next</button>
+            </div>
         </div>
+    </div>
+</div>
 
-        <footer>
-            &copy; 2023 Streaming Video Player | github.com/Borislavv/streaming
-        </footer>
+<footer>
+    &copy; 2023 Streaming Video Player | github.com/Borislavv/streaming
+</footer>
 
-        <script src="http://0.0.0.0:8000/static/js/index.js"></script>
-        <script src="http://0.0.0.0:8000/static/js/websocket.js"></script>
-    </body>
+<script src="http://0.0.0.0:8000/static/js/index.js"></script>
+<script src="http://0.0.0.0:8000/static/js/websocket.js"></script>
+</body>
 </html>
