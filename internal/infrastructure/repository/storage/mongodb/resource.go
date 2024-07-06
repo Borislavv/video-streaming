@@ -20,7 +20,7 @@ import (
 const ResourcesCollection = "resources"
 
 var (
-	ResourceNotFoundByIdError    = errtype.NewEntityNotFoundError("resource", "id")
+	ResourceNotFoundByIdError    = errtype.NewEntityNotFoundError("mongo", "resource", "id")
 	ResourceInsertingFailedError = errtype.NewInternalRepositoryError("unable to store 'resource' or retrieve inserted 'id'")
 )
 
