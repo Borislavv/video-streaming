@@ -69,8 +69,8 @@ func (c *CreateController) Create(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	c.responder.Respond(w, videoAgg)
 	w.WriteHeader(http.StatusCreated)
+	c.responder.Respond(w, videoAgg)
 }
 
 func (c *CreateController) AddRoute(router *mux.Router) {
