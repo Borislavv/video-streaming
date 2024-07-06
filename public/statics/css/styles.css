@@ -356,25 +356,20 @@ footer {
     width: 100%; /* Полная ширина */
     height: 100%; /* Полная высота */
     overflow: auto; /* В случае превышения контента */
-    background-color: rgb(0,0,0); /* Цвет фона */
-    background-color: rgba(0,0,0,0.4); /* Черный с непрозрачностью */
+    background-color: rgba(0, 0, 0, 0.7); /* Черный с непрозрачностью */
 }
 
 .modal-content {
     position: relative;
-    background-color: #fefefe;
+    background-color: rgba(51, 51, 51, 0.9); /* Цвет фона */
     margin: 15% auto; /* 15% сверху и центрировано по горизонтали */
     padding: 20px;
     border: 1px solid #888;
-    width: 80%; /* Ширина контента */
-    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19); /* Тень */
-    animation-name: animatetop;
-    animation-duration: 0.4s; /* Анимация для плавного появления */
-}
-
-@keyframes animatetop {
-    from {top: -300px; opacity: 0}
-    to {top: 0; opacity: 1}
+    width: 50%; /* Ширина контента */
+    max-width: 600px; /* Максимальная ширина */
+    border-radius: 10px; /* Закругленные углы */
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5); /* Тень */
+    color: #c7c7c7; /* Цвет текста */
 }
 
 .close-button {
@@ -386,7 +381,38 @@ footer {
 
 .close-button:hover,
 .close-button:focus {
-    color: black;
+    color: white;
     text-decoration: none;
     cursor: pointer;
+}
+
+#video-upload-form label {
+    display: block;
+    margin-bottom: 8px;
+}
+
+#video-upload-form input[type="file"] {
+    display: block;
+    margin-bottom: 16px;
+    padding: 8px;
+    border: 1px solid #666;
+    border-radius: 5px;
+    box-sizing: border-box;
+    background-color: #444;
+    color: #c7c7c7;
+}
+
+#video-upload-form input[type="submit"] {
+    background-color: #444;
+    color: #c7c7c7;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    border-radius: 5px;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
+}
+
+#video-upload-form input[type="submit"]:hover {
+    background-color: #666;
 }
