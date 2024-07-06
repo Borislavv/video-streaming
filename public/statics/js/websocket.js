@@ -112,6 +112,7 @@ waitForVideoListWillBeRendered('.video-list', function () {
                 currentVideoID = li.id;
                 isSettingUp = true;
                 console.log('Requesting the first video ' + "ID:" + currentVideoID)
+                console.log(li)
                 requestByID('ID', currentVideoID)
             }
         });
@@ -146,7 +147,7 @@ nextBtn.addEventListener('click', function() {
 prevBtn.addEventListener('click', function(event) {
     let UL = document.querySelector('.video-list');
     if (UL !== null) {
-        let LIs             = UL.getElementsByTagName('li');
+        let LIs= UL.getElementsByTagName('li');
         let found           = false
         let previousVideoID = ''
         Array.from(LIs).forEach(function (li) {
@@ -193,6 +194,7 @@ document.addEventListener('click', function (event) {
 function requestByID(strategy, id) {
     let data = `${strategy}::{ "id": "${id}", "token": "${token}" }`
     console.log("websocket request: " + data);
+    console.log(id)
     websocket.send(data)
 }
 
