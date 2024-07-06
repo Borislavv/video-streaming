@@ -2,6 +2,7 @@ package mongodb
 
 import (
 	"context"
+	"errors"
 	"github.com/Borislavv/video-streaming/internal/domain/agg"
 	"github.com/Borislavv/video-streaming/internal/domain/dto"
 	"github.com/Borislavv/video-streaming/internal/domain/errtype"
@@ -20,9 +21,9 @@ import (
 const VideosCollection = "videos"
 
 var (
-	VideoNotFoundByIdError         = errtype.NewEntityNotFoundError("video", "id")
-	VideoNotFoundByNameError       = errtype.NewEntityNotFoundError("video", "name")
-	VideoNotFoundByResourceIdError = errtype.NewEntityNotFoundError("video", "resource.id")
+	VideoNotFoundByIdError         = errtype.NewEntityNotFoundError("mongo", "video", "id")
+	VideoNotFoundByNameError       = errtype.NewEntityNotFoundError("mongo", "video", "name")
+	VideoNotFoundByResourceIdError = errtype.NewEntityNotFoundError("mongo", "video", "resource.id")
 	VideoInsertingFailedError      = errtype.NewInternalValidationError("unable to store 'video' or get inserted 'id'")
 	VideoWasNotDeletedError        = errtype.NewInternalValidationError("video was not deleted")
 )
@@ -164,7 +165,7 @@ func (r *VideoRepository) FindOneByName(ctx context.Context, q queryinterface.Fi
 
 	video := &agg.Video{}
 	if err := r.db.FindOne(qCtx, filter).Decode(video); err != nil {
-		if err == mongo.ErrNoDocuments {
+		if errors.Is(err, mongo.ErrNoDocuments) {
 			return nil, VideoNotFoundByNameError
 		}
 		return nil, r.logger.LogPropagate(err)
